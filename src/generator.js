@@ -134,14 +134,22 @@ sannyGen.forBlock["text_print_title"] = function (block, gen) {
   return `Text.PrintBigString("${title}", {time} ${ms}, TextStyle.BottomRight)\n`;
 };
 
+sannyGen.forBlock["text_print_title_and_wait"] = function (block) {
+  const title = gen._missionTitle.replace(/"/g, '\\"');
+  const ms = block.getFieldValue("MS");
+  return `Text.PrintBigString("${title}", {time} ${ms}, TextStyle.BottomRight)\nwait ${Number(ms) + 250}\n`;
+};
+
 sannyGen.forBlock["text_print_big_string"] = function (block) {
   const text = block.getFieldValue("TEXT").replace(/"/g, '\\"');
   const ms = block.getFieldValue("MS");
   return `Text.PrintBigString("${text}", {time} ${ms}, TextStyle.BottomRight)\n`;
 };
 
-sannyGen.forBlock["text_clear_small"] = function () {
-  return `Text.ClearSmallPrints()\n`;
+sannyGen.forBlock["text_print_big_string_and_wait"] = function (block) {
+  const text = block.getFieldValue("TEXT").replace(/"/g, '\\"');
+  const ms = block.getFieldValue("MS");
+  return `Text.PrintBigString("${text}", {time} ${ms}, TextStyle.BottomRight)\nwait ${Number(ms) + 250}\n`;
 };
 
 sannyGen.forBlock["text_print_help"] = function (block) {

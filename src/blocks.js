@@ -214,10 +214,23 @@ CLEOBlocks["text_print_title"] = {
   },
 };
 
+CLEOBlocks["text_print_title_and_wait"] = {
+  init() {
+    this.appendDummyInput()
+      .appendField("print title for")
+      .appendField(new Blockly.FieldNumber(5000, 0), "MS")
+      .appendField("ms and wait");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(160);
+    this.setTooltip("Text.PrintBigString (Bottom-right mission title, see Mission Metadata), then wait 250ms longer than the specified time");
+  },
+};
+
 CLEOBlocks["text_print_big_string"] = {
   init() {
     this.appendDummyInput()
-      .appendField("print title")
+      .appendField("print big string")
       .appendField(new Blockly.FieldTextInput("Mission Name"), "TEXT")
       .appendField("for")
       .appendField(new Blockly.FieldNumber(5000, 0), "MS")
@@ -229,14 +242,18 @@ CLEOBlocks["text_print_big_string"] = {
   },
 };
 
-CLEOBlocks["text_clear_small"] = {
+CLEOBlocks["text_print_big_string_and_wait"] = {
   init() {
     this.appendDummyInput()
-      .appendField("clear small prints");
+      .appendField("print big string")
+      .appendField(new Blockly.FieldTextInput("Mission Name"), "TEXT")
+      .appendField("for")
+      .appendField(new Blockly.FieldNumber(5000, 0), "MS")
+      .appendField("ms and wait");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(160);
-    this.setTooltip("Text.ClearSmallPrints");
+    this.setTooltip("Text.PrintBigString (Bottom-right, like a mission title), then wait 250ms longer than the specified time");
   },
 };
 
