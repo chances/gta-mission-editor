@@ -22,12 +22,12 @@ CLEOBlocks["mission_pass"] = {
   init() {
     this.appendDummyInput()
       .appendField("mission")
-      .appendField(new Blockly.FieldTextInput("NooM_X"), "KEXT")
+      .appendField(new Blockly.FieldTextInput("Mpass_0"), "KEXT")
       .appendField("passed");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(270);
-    this.setTooltip("Play mission-passed tune, register pass, award score, show success banner");
+    this.setTooltip("Play mission passed tune, register mission passed, award money, and show success banner");
   },
 };
 
@@ -201,6 +201,19 @@ CLEOBlocks["text_clear"] = {
   },
 };
 
+CLEOBlocks["text_print_title"] = {
+  init() {
+    this.appendDummyInput()
+      .appendField("print title for")
+      .appendField(new Blockly.FieldNumber(5000, 0), "MS")
+      .appendField("ms");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(160);
+    this.setTooltip("Text.PrintBigString (Bottom-right mission title, see Mission Metadata)");
+  },
+};
+
 CLEOBlocks["text_print_big_string"] = {
   init() {
     this.appendDummyInput()
@@ -212,7 +225,7 @@ CLEOBlocks["text_print_big_string"] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(160);
-    this.setTooltip("Text.PrintBigString (Bottom-right mission title)");
+    this.setTooltip("Text.PrintBigString (Bottom-right, like a mission title)");
   },
 };
 

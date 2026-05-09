@@ -19,26 +19,36 @@ const workspace = Blockly.inject("blocklyDiv", {
 
 const startXml = `
 <xml>
-  <block type="text_print_big_string">
-    <field name="TEXT">My Mission</field>
-    <field name="MS">5000</field>
+  <block type="mission_given">
     <next>
-      <block type="cleo_wait"><field name="MS">7500</field>
+      <block type="text_print_title">
+        <field name="MS">5000</field>
         <next>
-          <block type="cleo_while_true">
-            <statement name="BODY">
-              <block type="cleo_wait"><field name="MS">0</field>
+          <block type="cleo_wait"><field name="MS">7500</field>
+            <next>
+              <block type="cleo_while_true">
+                <statement name="BODY">
+                  <block type="cleo_wait"><field name="MS">0</field>
+                    <next>
+                      <block type="cleo_if_or">
+                        <value name="COND1"><block type="player_is_dead"/></value>
+                        <value name="COND2"><block type="player_has_been_arrested"/></value>
+                        <statement name="BODY">
+                          <block type="mission_fail"/>
+                        </statement>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
                 <next>
-                  <block type="cleo_if_or">
-                    <value name="COND1"><block type="player_is_dead"/></value>
-                    <value name="COND2"><block type="player_has_been_arrested"/></value>
-                    <statement name="BODY">
-                      <block type="mission_fail"/>
-                    </statement>
+                  <block type="mission_pass">
+                    <next>
+                      <block type="mission_finish"/>
+                    </next>
                   </block>
                 </next>
               </block>
-            </statement>
+            </next>
           </block>
         </next>
       </block>

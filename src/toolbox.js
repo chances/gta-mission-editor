@@ -37,6 +37,7 @@ const toolbox = {
         { kind: "block", type: "text_print_string" },
         { kind: "block", type: "text_print_string_and_wait" },
         { kind: "block", type: "text_clear" },
+        { kind: "block", type: "text_print_title" },
         { kind: "block", type: "text_print_big_string" },
         { kind: "block", type: "text_clear_small" },
         { kind: "block", type: "text_print_help" },

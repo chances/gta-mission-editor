@@ -22,7 +22,7 @@ sannyGen.forBlock["mission_given"] = function () {
 sannyGen.forBlock["mission_pass"] = function (block) {
   return [
     `Audio.PlayMissionPassedTune(1)`,
-    `register_mission_passed '${block.getFieldValue("KEXT") || "NooM_0"}'`,
+    `Stat.RegisterMissionPassed('${block.getFieldValue("KEXT") || "Mpass_0"}')`,
     `Player.AddScore($player, REWARD)`,
     `Text.PrintWithNumberBig('M_PASS', REWARD, 5000, TextStyle.Middle)`,
     `wait 5500`,
@@ -43,7 +43,7 @@ sannyGen.forBlock["mission_fail"] = function () {
 };
 
 sannyGen.forBlock["mission_finish"] = function () {
-  return [
+  return "\n" + [
     `Mission.Finish()`,
     `$onMission = false`,
     `$missionIndex += 1`,
@@ -126,6 +126,12 @@ sannyGen.forBlock["text_print_string_and_wait"] = function (block) {
 
 sannyGen.forBlock["text_clear"] = function () {
   return `Text.ClearPrints()\n`;
+};
+
+sannyGen.forBlock["text_print_title"] = function (block, gen) {
+  const title = gen._missionTitle.replace(/"/g, '\\"');
+  const ms = block.getFieldValue("MS");
+  return `Text.PrintBigString("${title}", {time} ${ms}, TextStyle.BottomRight)\n`;
 };
 
 sannyGen.forBlock["text_print_big_string"] = function (block) {
