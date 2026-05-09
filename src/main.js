@@ -1,15 +1,15 @@
-import Blockly from 'blockly';
+import Blockly from "blockly";
 
-import blocks from './blocks.js';
-import sannyGen from './generator.js';
-import toolbox from './toolbox.js';
+import blocks from "./blocks.js";
+import sannyGen from "./generator.js";
+import toolbox from "./toolbox.js";
 
 Blockly.common.defineBlocks(blocks);
 
-const workspace = Blockly.inject('blocklyDiv', {
+const workspace = Blockly.inject("blocklyDiv", {
   toolbox,
   theme: Blockly.Themes.Dark,
-  grid: { spacing: 24, length: 8, colour: '#2a2a4a', snap: true },
+  grid: { spacing: 24, length: 8, colour: "#2a2a4a", snap: true },
   zoom: { controls: true, wheel: true, startScale: 0.9 },
   trashcan: true,
   scrollbars: true,
@@ -52,9 +52,9 @@ Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom(startXml), workspace);
 // ─── Generate ──────────────────────────────────────────────────────────────
 
 function generate() {
-  const title = document.getElementById('missionName').value || 'My Mission';
-  const description = document.getElementById('missionDescription').value || '';
-  const reward = document.getElementById('missionReward').value || 250;
+  const title = document.getElementById("missionName").value || "My Mission";
+  const description = document.getElementById("missionDescription").value || "";
+  const reward = document.getElementById("missionReward").value || 250;
 
   sannyGen._missionTitle = title;
   sannyGen._missionReward = reward;
@@ -68,20 +68,22 @@ function generate() {
     `//==============================================`,
     `const REWARD = ${reward}`,
     ``,
-  ].join('\n') + '\n';
+  ].join("\n") + "\n";
   const body = sannyGen.workspaceToCode(workspace);
 
-  document.getElementById('codeOutput').textContent = header + body;
+  document.getElementById("codeOutput").textContent = header + body;
 }
 
-document.getElementById('generateBtn').addEventListener('click', generate);
+document.getElementById("generateBtn").addEventListener("click", generate);
 
-document.getElementById('copyBtn').addEventListener('click', () => {
-  const text = document.getElementById('codeOutput').textContent;
+document.getElementById("copyBtn").addEventListener("click", () => {
+  const text = document.getElementById("codeOutput").textContent;
   navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('copyBtn');
-    btn.textContent = 'Copied!';
-    setTimeout(() => { btn.textContent = 'Copy'; }, 1500);
+    const btn = document.getElementById("copyBtn");
+    btn.textContent = "Copied!";
+    setTimeout(() => {
+      btn.textContent = "Copy";
+    }, 1500);
   });
 });
 

@@ -10,10 +10,11 @@ A web-based editor for creating 3D-era GTA mission scripts using [Blockly](https
 2. Clone this repository.
 3. Start the development server:
 
-    ```sh
-    deno task dev
-    ```
+   ```sh
+   deno task dev
+   ```
 
 ## License
 
-This project is licensed under the [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause). See [LICENSE](./LICENSE) file for details.
+This project is licensed under the [BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause). See
+[LICENSE](./LICENSE) file for details.

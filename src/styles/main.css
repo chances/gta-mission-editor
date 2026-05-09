@@ -40,7 +40,7 @@ body {
   display: flex;
   flex-direction: column;
   color: var(--color-text-primary);
-  font-family: 'Segoe UI', system-ui, sans-serif;
+  font-family: "Segoe UI", system-ui, sans-serif;
   height: 100vh;
   background: var(--color-bg-dark);
 }
@@ -187,7 +187,7 @@ body {
 #codeOutput {
   flex: 1;
   color: var(--color-text-primary);
-  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-family: "Cascadia Code", "Fira Code", "Consolas", monospace;
   font-size: var(--font-size-sm);
   line-height: 1.6;
   white-space: pre;
@@ -208,7 +208,7 @@ body {
   transition-delay: 250ms;
 }
 
-.blocklyToolboxDiv:has(.blocklyToolboxCategory[aria-selected=true]) {
+.blocklyToolboxDiv:has(.blocklyToolboxCategory[aria-selected="true"]) {
   border-inline-end-color: transparent;
   transition: border-color 125ms ease-out;
   transition-delay: 0;
