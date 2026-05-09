@@ -1,0 +1,5 @@
+# Artifacts
+.vite/
+
+# Node
+node_modules/

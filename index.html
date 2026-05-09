@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>GTA Mission Editor</title>
+  <link rel="stylesheet" href="src/styles/main.css">
+</head>
+<body>
+
+<div id="toolbar">
+  <h1>GTA Mission Editor</h1>
+  <button id="generateBtn">Generate Script</button>
+  <button id="copyBtn">Copy</button>
+</div>
+
+<div id="main">
+  <div id="blocklyDiv"></div>
+  <div id="outputPanel">
+    <h2 class="outputPanelHeader">Mission Metadata</h2>
+    <div class="field">
+        <label for="missionName">Title</label>
+        <input id="missionName" type="text" value="My Mission" />
+    </div>
+    <div class="field">
+        <label for="missionDescription">Description</label>
+        <input id="missionDescription" type="text" value="Get to the church on time" />
+    </div>
+    <div class="field">
+        <label for="missionReward">Reward</label>
+        <input id="missionReward" type="number" min="250" value="500" />
+    </div>
+    <h2 class="outputPanelHeader">Generated Script</h2>
+    <pre id="codeOutput"></pre>
+  </div>
+</div>
+
+<script type="module" src="src/main.js"></script>
+
+</body>
+</html>

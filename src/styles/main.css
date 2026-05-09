@@ -1,0 +1,158 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+}
+
+#toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: #16213e;
+  border-bottom: 2px solid #0f3460;
+  flex-shrink: 0;
+}
+
+#toolbar h1 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #e94560;
+  letter-spacing: 0.5px;
+  margin-right: 8px;
+}
+
+#toolbar label {
+  font-size: 13px;
+  color: #aaa;
+}
+
+#missionName {
+  background: #0f3460;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  padding: 4px 10px;
+  font-size: 13px;
+  width: 180px;
+}
+
+#missionDescription {
+  background: #0f3460;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  padding: 4px 10px;
+  font-size: 13px;
+  width: 180px;
+}
+
+#missionReward {
+  background: #0f3460;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  padding: 4px 10px;
+  font-size: 13px;
+  width: calc(12ch + 32px);
+}
+
+#generateBtn {
+  background: #e94560;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+#generateBtn:hover { background: #c73652; }
+
+#copyBtn {
+  background: #0f3460;
+  border: 1px solid #e94560;
+  border-radius: 4px;
+  color: #fff;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+#copyBtn:hover { background: #16213e; }
+
+#main {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+#blocklyDiv {
+  flex: 1;
+  height: 100%;
+}
+
+#outputPanel {
+  width: 380px;
+  display: flex;
+  flex-direction: column;
+  border-left: 2px solid #0f3460;
+  flex-shrink: 0;
+}
+
+.outputPanelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #16213e;
+  border-bottom: 1px solid #0f3460;
+  font-size: 12px;
+  color: #aaa;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.outputPanelHeader:not(:first-child) {
+    margin-block-start: 6px;
+}
+
+.field {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-block: 12px 6px;
+  margin-inline: 6px;
+}
+
+.field label {
+  flex: 1;
+  margin-right: 12px;
+  font-size: 12px;
+  color: #aaa;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+#codeOutput {
+  flex: 1;
+  overflow: auto;
+  padding: 12px;
+  font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  background: #0d0d1a;
+  color: #c9d1d9;
+  white-space: pre;
+}
+
+.blocklyMainBackground { fill: #1a1a2e !important; }
+
+.blocklyToolboxDiv { background: #16213e; }
