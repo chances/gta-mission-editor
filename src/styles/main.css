@@ -1,20 +1,17 @@
 :root {
   /* Colors - Base */
-  --color-bg-dark: #1a1a2e;
-  --color-bg-secondary: #16213e;
-  --color-bg-tertiary: #0f3460;
-  --color-bg-code: #0d0d1a;
+  --color-bg-dark: oklch(20% 0.0 0);
+  --color-bg-secondary: rgba(11, 11, 11);
+  --color-bg-tertiary: #4a4a4a;
+  --color-bg-code: black;
 
   /* Colors - Text */
   --color-text-primary: #e0e0e0;
   --color-text-secondary: #aaa;
-  --color-text-white: #fff;
-
-  /* Colors - Accent */
-  --color-accent: #e94560;
-  --color-accent-hover: #c73652;
+  --color-text-white: white;
 
   /* Spacing */
+  --spacing-xxs: 2px;
   --spacing-xs: 4px;
   --spacing-sm: 6px;
   --spacing-md: 8px;
@@ -26,7 +23,6 @@
   /* Border & Radius */
   --border-radius: 4px;
   --border-thin: 1px;
-  --border-thick: 2px;
 
   /* Font Size */
   --font-size-sm: 12px;
@@ -55,7 +51,7 @@ body {
   flex-shrink: 0;
   gap: var(--spacing-xl);
   padding: var(--spacing-lg) 16px;
-  border-bottom: var(--border-thick) solid var(--color-bg-tertiary);
+  border-bottom: var(--border-thin) solid var(--color-bg-tertiary);
   background: var(--color-bg-secondary);
 }
 
@@ -122,7 +118,7 @@ body {
   color: var(--color-text-white);
   font-size: var(--font-size-base);
   padding: var(--spacing-sm) 14px;
-  border: var(--border-thin) solid var(--color-accent);
+  border: none;
   border-radius: var(--border-radius);
   background: var(--color-bg-tertiary);
   cursor: pointer;
@@ -148,7 +144,7 @@ body {
   flex-direction: column;
   flex-shrink: 0;
   width: var(--spacing-panel);
-  border-left: var(--border-thick) solid var(--color-bg-tertiary);
+  border-inline: var(--border-thin) solid var(--color-bg-tertiary);
 }
 
 .outputPanelHeader {
@@ -162,7 +158,10 @@ body {
   text-transform: uppercase;
   padding: var(--spacing-md) var(--spacing-xl);
   background: var(--color-bg-secondary);
-  border-bottom: var(--border-thin) solid var(--color-bg-tertiary);
+  border-block: var(--border-thin) solid var(--color-bg-tertiary);
+}
+.outputPanelHeader:first-child {
+  border-block-start: none;
 }
 .outputPanelHeader:not(:first-child) {
   margin-block-start: var(--spacing-sm);
@@ -203,5 +202,35 @@ body {
 }
 
 .blocklyToolboxDiv {
+  border-inline-end: var(--border-thin) solid var(--color-bg-tertiary);
   background: var(--color-bg-secondary);
+  transition: border-color 150ms ease-out;
+  transition-delay: 250ms;
+}
+
+.blocklyToolboxDiv:has(.blocklyToolboxCategory[aria-selected=true]) {
+  border-inline-end-color: transparent;
+  transition: border-color 125ms ease-out;
+  transition-delay: 0;
+}
+
+.blocklyTreeRow {
+  padding-block: var(--spacing-xxs) var(--spacing-xs);
+  height: unset;
+  cursor: pointer;
+}
+
+.blocklyFlyout {
+  opacity: 1;
+  transition: opacity 250ms ease-out, display 250ms allow-discrete;
+
+  @starting-style {
+    opacity: 0;
+  }
+}
+
+.blocklyFlyoutBackground {
+  fill: var(--color-bg-secondary) !important;
+  fill-opacity: 0.8;
+  stroke: transparent;
 }
