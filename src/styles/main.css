@@ -1,92 +1,136 @@
-* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  /* Colors - Base */
+  --color-bg-dark: #1a1a2e;
+  --color-bg-secondary: #16213e;
+  --color-bg-tertiary: #0f3460;
+  --color-bg-code: #0d0d1a;
+
+  /* Colors - Text */
+  --color-text-primary: #e0e0e0;
+  --color-text-secondary: #aaa;
+  --color-text-white: #fff;
+
+  /* Colors - Accent */
+  --color-accent: #e94560;
+  --color-accent-hover: #c73652;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 6px;
+  --spacing-md: 8px;
+  --spacing-lg: 10px;
+  --spacing-xl: 12px;
+  --spacing-panel: 380px;
+  --spacing-input-width: 180px;
+
+  /* Border & Radius */
+  --border-radius: 4px;
+  --border-thin: 1px;
+  --border-thick: 2px;
+
+  /* Font Size */
+  --font-size-sm: 12px;
+  --font-size-base: 13px;
+  --font-size-lg: 16px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 body {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  color: var(--color-text-primary);
   font-family: 'Segoe UI', system-ui, sans-serif;
-  background: #1a1a2e;
-  color: #e0e0e0;
+  height: 100vh;
+  background: var(--color-bg-dark);
 }
 
 #toolbar {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 16px;
-  background: #16213e;
-  border-bottom: 2px solid #0f3460;
   flex-shrink: 0;
+  gap: var(--spacing-xl);
+  padding: var(--spacing-lg) 16px;
+  border-bottom: var(--border-thick) solid var(--color-bg-tertiary);
+  background: var(--color-bg-secondary);
 }
 
 #toolbar h1 {
-  font-size: 16px;
+  color: var(--color-accent);
+  font-size: var(--font-size-lg);
   font-weight: 700;
-  color: #e94560;
   letter-spacing: 0.5px;
-  margin-right: 8px;
+  margin-right: var(--spacing-md);
 }
 
 #toolbar label {
-  font-size: 13px;
-  color: #aaa;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-base);
 }
 
 #missionName {
-  background: #0f3460;
+  color: var(--color-text-white);
+  font-size: var(--font-size-base);
+  padding: var(--spacing-xs) var(--spacing-lg);
+  width: var(--spacing-input-width);
   border: none;
-  border-radius: 4px;
-  color: #fff;
-  padding: 4px 10px;
-  font-size: 13px;
-  width: 180px;
+  border-radius: var(--border-radius);
+  background: var(--color-bg-tertiary);
 }
 
 #missionDescription {
-  background: #0f3460;
+  color: var(--color-text-white);
+  font-size: var(--font-size-base);
+  padding: var(--spacing-xs) var(--spacing-lg);
+  width: var(--spacing-input-width);
   border: none;
-  border-radius: 4px;
-  color: #fff;
-  padding: 4px 10px;
-  font-size: 13px;
-  width: 180px;
+  border-radius: var(--border-radius);
+  background: var(--color-bg-tertiary);
 }
 
 #missionReward {
-  background: #0f3460;
-  border: none;
-  border-radius: 4px;
-  color: #fff;
-  padding: 4px 10px;
-  font-size: 13px;
+  color: var(--color-text-white);
+  font-size: var(--font-size-base);
+  padding: var(--spacing-xs) var(--spacing-lg);
   width: calc(12ch + 32px);
+  border: none;
+  border-radius: var(--border-radius);
+  background: var(--color-bg-tertiary);
 }
 
 #generateBtn {
-  background: #e94560;
-  border: none;
-  border-radius: 4px;
-  color: #fff;
-  padding: 6px 16px;
-  font-size: 13px;
+  color: var(--color-text-white);
+  font-size: var(--font-size-base);
   font-weight: 600;
-  cursor: pointer;
   margin-left: auto;
+  padding: var(--spacing-sm) 16px;
+  border: none;
+  border-radius: var(--border-radius);
+  background: var(--color-accent);
+  cursor: pointer;
 }
 
-#generateBtn:hover { background: #c73652; }
+#generateBtn:hover {
+  background: var(--color-accent-hover);
+}
 
 #copyBtn {
-  background: #0f3460;
-  border: 1px solid #e94560;
-  border-radius: 4px;
-  color: #fff;
-  padding: 6px 14px;
-  font-size: 13px;
+  color: var(--color-text-white);
+  font-size: var(--font-size-base);
+  padding: var(--spacing-sm) 14px;
+  border: var(--border-thin) solid var(--color-accent);
+  border-radius: var(--border-radius);
+  background: var(--color-bg-tertiary);
   cursor: pointer;
 }
 
-#copyBtn:hover { background: #16213e; }
+#copyBtn:hover {
+  background: var(--color-bg-secondary);
+}
 
 #main {
   display: flex;
@@ -100,59 +144,64 @@ body {
 }
 
 #outputPanel {
-  width: 380px;
   display: flex;
   flex-direction: column;
-  border-left: 2px solid #0f3460;
   flex-shrink: 0;
+  width: var(--spacing-panel);
+  border-left: var(--border-thick) solid var(--color-bg-tertiary);
 }
 
 .outputPanelHeader {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 12px;
-  background: #16213e;
-  border-bottom: 1px solid #0f3460;
-  font-size: 12px;
-  color: #aaa;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
   font-weight: 600;
-  text-transform: uppercase;
   letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: var(--spacing-md) var(--spacing-xl);
+  background: var(--color-bg-secondary);
+  border-bottom: var(--border-thin) solid var(--color-bg-tertiary);
 }
 .outputPanelHeader:not(:first-child) {
-    margin-block-start: 6px;
+  margin-block-start: var(--spacing-sm);
 }
 
 .field {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-block: 12px 6px;
-  margin-inline: 6px;
+  margin-block: var(--spacing-xl) var(--spacing-sm);
+  margin-inline: var(--spacing-sm);
 }
 
 .field label {
   flex: 1;
-  margin-right: 12px;
-  font-size: 12px;
-  color: #aaa;
+  margin-right: var(--spacing-xl);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
   font-weight: 600;
   letter-spacing: 0.5px;
 }
 
 #codeOutput {
   flex: 1;
-  overflow: auto;
-  padding: 12px;
+  color: var(--color-text-primary);
   font-family: 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
-  font-size: 12px;
+  font-size: var(--font-size-sm);
   line-height: 1.6;
-  background: #0d0d1a;
-  color: #c9d1d9;
   white-space: pre;
+  padding: var(--spacing-xl);
+  background: var(--color-bg-code);
+  overflow: auto;
 }
 
-.blocklyMainBackground { fill: #1a1a2e !important; }
+.blocklyMainBackground {
+  fill: var(--color-bg-dark) !important;
+  stroke: transparent;
+}
 
-.blocklyToolboxDiv { background: #16213e; }
+.blocklyToolboxDiv {
+  background: var(--color-bg-secondary);
+}
