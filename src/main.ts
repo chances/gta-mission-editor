@@ -1,20 +1,6 @@
 import Blockly from "blockly";
 
-import blocks from "./blocks.ts";
 import sannyGen from "./generator.ts";
-import toolbox from "./toolbox.ts";
-
-Blockly.common.defineBlocks(blocks);
-Blockly.Scrollbar.scrollbarThickness = 10;
-
-const workspace = Blockly.inject("blocklyDiv", {
-  toolbox,
-  theme: Blockly.Themes.Zelos,
-  grid: { spacing: 24, length: 8, colour: "#2a2a4a", snap: true },
-  zoom: { controls: true, wheel: true, startScale: 0.9 },
-  trashcan: true,
-  scrollbars: true,
-});
 
 // ─── Starter blocks ────────────────────────────────────────────────────────
 
@@ -65,7 +51,7 @@ const startXml = `
 </xml>
 `.trim();
 
-Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom(startXml), workspace);
+Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom(startXml), sannyGen.workspace);
 
 // ─── Generate ──────────────────────────────────────────────────────────────
 
@@ -87,7 +73,7 @@ function generate() {
     `const REWARD = ${reward}`,
     ``,
   ].join("\n") + "\n";
-  const body = sannyGen.workspaceToCode(workspace);
+  const body = sannyGen.workspaceToCode(sannyGen.workspace);
 
   document.getElementById("codeOutput")!.textContent = header + body;
 }
@@ -108,7 +94,7 @@ document.getElementById("copyBtn")!.addEventListener("click", () => {
 
 // Auto-generate on workspace change (debounced)
 let debounceTimer: number;
-workspace.addChangeListener(() => {
+sannyGen.workspace.addChangeListener(() => {
   clearTimeout(debounceTimer);
   debounceTimer = setTimeout(generate, 400);
 });

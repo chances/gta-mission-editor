@@ -1,11 +1,28 @@
-import { Block, CodeGenerator } from "blockly";
+import Blockly, { Block, CodeGenerator, Workspace } from "blockly";
+
+import blocks from "./blocks.ts";
+import toolbox from "./toolbox.ts";
+
+Blockly.common.defineBlocks(blocks);
 
 export class SannyGenerator extends CodeGenerator {
   missionReward?: number;
   missionTitle?: string;
 
-  constructor() {
+  readonly workspace: Workspace;
+
+  constructor(container: Element) {
     super("SannyBuilder");
+
+    Blockly.Scrollbar.scrollbarThickness = 10;
+    this.init(this.workspace = Blockly.inject(container, {
+      toolbox,
+      theme: Blockly.Themes.Zelos,
+      grid: { spacing: 24, length: 8, colour: "#2a2a4a", snap: true },
+      zoom: { controls: true, wheel: true, startScale: 0.9 },
+      trashcan: true,
+      scrollbars: true,
+    }));
   }
 
   // Allow any block to follow any other
@@ -17,7 +34,7 @@ export class SannyGenerator extends CodeGenerator {
 }
 
 // Sanny Builder code generator for CLEO mission blocks
-const sannyGen = new SannyGenerator();
+const sannyGen = new SannyGenerator(document.getElementById("blocklyDiv")!);
 sannyGen.INDENT = "  ";
 
 const ORDER_NONE = 0;
