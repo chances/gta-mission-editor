@@ -1,28 +1,20 @@
 import Blockly, { Block, CodeGenerator, Workspace } from "blockly";
 
-import blocks from "./blocks.ts";
-import toolbox from "./toolbox.ts";
-
-Blockly.common.defineBlocks(blocks);
+const reservedWords: string = [].join(",");
 
 export class SannyGenerator extends CodeGenerator {
   missionReward?: number;
   missionTitle?: string;
 
-  readonly workspace: Workspace;
-
-  constructor(container: Element) {
+  constructor() {
     super("SannyBuilder");
+    this.nameDB_ = new Blockly.Names(reservedWords, "$");
+  }
 
-    Blockly.Scrollbar.scrollbarThickness = 10;
-    this.init(this.workspace = Blockly.inject(container, {
-      toolbox,
-      theme: Blockly.Themes.Zelos,
-      grid: { spacing: 24, length: 8, colour: "#2a2a4a", snap: true },
-      zoom: { controls: true, wheel: true, startScale: 0.9 },
-      trashcan: true,
-      scrollbars: true,
-    }));
+  override init(workspace: Workspace) {
+    super.init(workspace);
+    this.nameDB_?.reset();
+    this.nameDB_?.setVariableMap(workspace.getVariableMap());
   }
 
   // Allow any block to follow any other
@@ -34,7 +26,7 @@ export class SannyGenerator extends CodeGenerator {
 }
 
 // Sanny Builder code generator for CLEO mission blocks
-const sannyGen = new SannyGenerator(document.getElementById("blocklyDiv")!);
+const sannyGen = new SannyGenerator();
 sannyGen.INDENT = "  ";
 
 const ORDER_NONE = 0;
@@ -44,45 +36,44 @@ const ORDER_NONE = 0;
 sannyGen.forBlock["var_set_bool_literal"] = function (block) {
   const v = sannyGen.getVariableName(block.getFieldValue("VAR"));
   const val = block.getFieldValue("VAL");
-  return `$${v} = ${val}\n`;
+  return `${v} = ${val}\n`;
 };
 
 sannyGen.forBlock["var_set_bool_cond"] = function (block, gen) {
   const v = sannyGen.getVariableName(block.getFieldValue("VAR"));
   const cond = gen.valueToCode(block, "COND", ORDER_NONE) || "false";
-  if (cond === "false") return `$${v} = false\n`;
+  if (cond === "false") return `${v} = false\n`;
   return [
-    `$${v} = false`,
+    `${v} = false`,
     `if ${cond}`,
     "then",
-    `  $${v} = true`,
+    `  ${v} = true`,
     "endif",
-    ].join("\n");
-  // return `$${v} = ${cond}\n`;
+    ].join("\n") + "\n";
 };
 
 sannyGen.forBlock["var_set_number"] = function (block) {
   const v = sannyGen.getVariableName(block.getFieldValue("VAR"));
   const val = block.getFieldValue("VAL");
-  return `$${v} = ${val}\n`;
+  return `${v} = ${val}\n`;
 };
 
 sannyGen.forBlock["var_set_string"] = function (block) {
   const v = sannyGen.getVariableName(block.getFieldValue("VAR"));
   const val = block.getFieldValue("VAL");
-  return `$${v} = "${val}"\n`;
+  return `${v} = "${val}"\n`;
 };
 
 sannyGen.forBlock["var_check_bool"] = function (block) {
   const v = sannyGen.getVariableName(block.getFieldValue("VAR"));
   const val = block.getFieldValue("VAL");
-  return [`$${v} == ${val}`, ORDER_NONE];
+  return [`${v} == ${val}`, ORDER_NONE];
 };
 
 sannyGen.forBlock["var_check_number"] = function (block) {
   const v = sannyGen.getVariableName(block.getFieldValue("VAR"));
   const val = block.getFieldValue("VAL");
-  return [`$${v} == ${val}`, ORDER_NONE];
+  return [`${v} == ${val}`, ORDER_NONE];
 };
 
 // ─── CONTROL FLOW ──────────────────────────────────────────────────────────
@@ -305,7 +296,7 @@ sannyGen.forBlock["pickup_create"] = function (block) {
   const x = block.getFieldValue("X");
   const y = block.getFieldValue("Y");
   const z = block.getFieldValue("Z");
-  return `$${v} = Pickup.Create(${model}, PickupType.${type}, ${x}, ${y}, ${z})\n`;
+  return `${v} = Pickup.Create(${model}, PickupType.${type}, ${x}, ${y}, ${z})\n`;
 };
 
 sannyGen.forBlock["pickup_collected"] = function (block) {
@@ -315,7 +306,7 @@ sannyGen.forBlock["pickup_collected"] = function (block) {
 
 sannyGen.forBlock["pickup_remove"] = function (block) {
   const v = sannyGen.getVariableName(block.getFieldValue("PICKUP_VAR"));
-  return `Pickup.Remove($${v})\n`;
+  return `Pickup.Remove(${v})\n`;
 };
 
 // ─── BLIPS ─────────────────────────────────────────────────────────────────
@@ -323,7 +314,7 @@ sannyGen.forBlock["pickup_remove"] = function (block) {
 sannyGen.forBlock["blip_for_pickup"] = function (block) {
   const blip = sannyGen.getVariableName(block.getFieldValue("BLIP_VAR"));
   const pickup = block.getFieldValue("PICKUP_VAR");
-  return `$${blip} = Blip.AddForPickup($${pickup})\n`;
+  return `${blip} = Blip.AddForPickup($${pickup})\n`;
 };
 
 sannyGen.forBlock["blip_for_coord"] = function (block) {
@@ -331,7 +322,7 @@ sannyGen.forBlock["blip_for_coord"] = function (block) {
   const x = block.getFieldValue("X");
   const y = block.getFieldValue("Y");
   const z = block.getFieldValue("Z");
-  return `$${blip} = Blip.AddForCoord(${x}, ${y}, ${z})\n`;
+  return `${blip} = Blip.AddForCoord(${x}, ${y}, ${z})\n`;
 };
 
 sannyGen.forBlock["blip_remove"] = function (block) {
@@ -374,7 +365,7 @@ sannyGen.forBlock["sound_loop"] = function (block) {
 
 sannyGen.forBlock["sound_remove"] = function (block) {
   const sound = sannyGen.getVariableName(block.getFieldValue("SOUND_VAR"));
-  return `Sound.Remove($${sound})\n`;
+  return `Sound.Remove(${sound})\n`;
 };
 
 export default sannyGen;
