@@ -1,0 +1,7 @@
+[
+  {
+    "label": "Run Development Server",
+    "command": "deno",
+    "args": ["task", "dev"]
+  }
+]
