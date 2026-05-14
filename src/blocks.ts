@@ -3,8 +3,13 @@ import Blockly from "blockly";
 import sounds from "./enums/sounds.js";
 import weapons from "./enums/weapons.js";
 
+// FIXME: Types for `BlockDefinition` are at this path, but not recognized by Deno
+/// <reference path="blockly/core/blocks.d.ts" />
+// deno-lint-ignore no-explicit-any
+type BlockDefinition = any;
+
 // Block definitions for CLEO/Sanny Builder mission scripting
-const CLEOBlocks = {};
+const CLEOBlocks = {} as Record<string, BlockDefinition>;
 
 // ─── MISSION ───────────────────────────────────────────────────────────────
 
@@ -333,9 +338,9 @@ CLEOBlocks["player_has_been_arrested"] = {
 };
 
 const weaponOptions = Object.keys(weapons).reduce((acc, key) => {
-  acc.push([key, weapons[key]]);
+  acc.push([key, (weapons as Record<string, string>)[key]]);
   return acc;
-}, []);
+}, [] as [string, string][]);
 
 CLEOBlocks["player_has_weapon"] = {
   init() {
@@ -533,9 +538,9 @@ CLEOBlocks["audio_mission_passed"] = {
 };
 
 const soundOptions = Object.keys(sounds).reduce((acc, key) => {
-  acc.push([key, sounds[key]]);
+  acc.push([key, (weapons as Record<string, string>)[key]]);
   return acc;
-}, []);
+}, [] as [string, string][]);
 
 CLEOBlocks["sound_one_off"] = {
   init() {

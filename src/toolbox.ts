@@ -1,4 +1,8 @@
-const toolbox = {
+/// <reference path="blockly/core/utils/toolbox.d.ts" />
+// FIXME: Types are at the path above, but not recognized by Deno
+import { ToolboxDefinition } from "blockly";
+
+const toolbox: ToolboxDefinition = {
   kind: "categoryToolbox",
   contents: [
     {

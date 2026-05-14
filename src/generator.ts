@@ -1,54 +1,63 @@
-import Blockly from "blockly";
+import { Block, CodeGenerator } from "blockly";
+
+export class SannyGenerator extends CodeGenerator {
+  missionReward?: number;
+  missionTitle?: string;
+
+  constructor() {
+    super("SannyBuilder");
+  }
+
+  // Allow any block to follow any other
+  protected override scrub_(block: Block, code: string, opt_thisOnly?: boolean): string {
+    const nextBlock = block.nextConnection && block.nextConnection.targetBlock();
+    const nextCode = opt_thisOnly ? "" : sannyGen.blockToCode(nextBlock);
+    return code + nextCode;
+  }
+}
 
 // Sanny Builder code generator for CLEO mission blocks
-const sannyGen = new Blockly.Generator("SannyBuilder");
+const sannyGen = new SannyGenerator();
 sannyGen.INDENT = "  ";
-
-// Allow any block to follow any other
-sannyGen.scrub_ = function (block, code, opt_thisOnly) {
-  const nextBlock = block.nextConnection && block.nextConnection.targetBlock();
-  const nextCode = opt_thisOnly ? "" : sannyGen.blockToCode(nextBlock);
-  return code + nextCode;
-};
 
 const ORDER_NONE = 0;
 
 // ─── MISSION ───────────────────────────────────────────────────────────────
 
 sannyGen.forBlock["mission_given"] = function () {
-  return `Stat.RegisterMissionGiven()\n\n`;
+  return "Stat.RegisterMissionGiven()\n\n";
 };
 
 sannyGen.forBlock["mission_pass"] = function (block) {
   return [
-    `Audio.PlayMissionPassedTune(1)`,
+    "Audio.PlayMissionPassedTune(1)",
     `Stat.RegisterMissionPassed('${block.getFieldValue("KEXT") || "Mpass_0"}')`,
-    `Player.AddScore($player, REWARD)`,
-    `Text.PrintWithNumberBig('M_PASS', REWARD, 5000, TextStyle.Middle)`,
-    `wait 5500`,
-    ``,
+    "Player.AddScore($player, REWARD)",
+    "Text.PrintWithNumberBig('M_PASS', REWARD, 5000, TextStyle.Middle)",
+    "wait 5500",
+    "",
   ].join("\n");
 };
 
 sannyGen.forBlock["mission_fail"] = function () {
   return [
-    `Text.PrintBig('M_FAIL', 3500, TextStyle.Middle)`,
-    `wait 3000`,
-    ``,
-    `Mission.Fail()`,
-    `$onMission = false`,
-    ``,
-    `05DC: terminate_custom_thread`,
+    "Text.PrintBig('M_FAIL', 3500, TextStyle.Middle)",
+    "wait 3000",
+    "",
+    "Mission.Fail()",
+    "$onMission = false",
+    "",
+    "05DC: terminate_custom_thread",
   ].join("\n") + "\n";
 };
 
 sannyGen.forBlock["mission_finish"] = function () {
   return "\n" + [
-    `Mission.Finish()`,
-    `$onMission = false`,
-    `$missionIndex += 1`,
-    ``,
-    `05DC: terminate_custom_thread`,
+    "Mission.Finish()",
+    "$onMission = false",
+    "$missionIndex += 1",
+    "",
+    "05DC: terminate_custom_thread",
   ].join("\n") + "\n";
 };
 
@@ -129,13 +138,15 @@ sannyGen.forBlock["text_clear"] = function () {
 };
 
 sannyGen.forBlock["text_print_title"] = function (block, gen) {
-  const title = gen._missionTitle.replace(/"/g, '\\"');
+  if (!gen.missionTitle) throw new Error("Mission title is not defined");
+  const title = gen.missionTitle.replace(/"/g, '\\"');
   const ms = block.getFieldValue("MS");
   return `Text.PrintBigString("${title}", {time} ${ms}, TextStyle.BottomRight)\n`;
 };
 
-sannyGen.forBlock["text_print_title_and_wait"] = function (block) {
-  const title = gen._missionTitle.replace(/"/g, '\\"');
+sannyGen.forBlock["text_print_title_and_wait"] = function (block, gen) {
+  if (!gen.missionTitle) throw new Error("Mission title is not defined");
+  const title = gen.missionTitle.replace(/"/g, '\\"');
   const ms = block.getFieldValue("MS");
   return `Text.PrintBigString("${title}", {time} ${ms}, TextStyle.BottomRight)\nwait ${Number(ms) + 250}\n`;
 };
@@ -311,7 +322,7 @@ sannyGen.forBlock["var_set_bool_literal"] = function (block) {
   return `$${v} = ${val}\n`;
 };
 
-sannyGen.forBlock["var_set_bool"] = function (block) {
+sannyGen.forBlock["var_set_bool"] = function (block, gen) {
   const v = block.getFieldValue("VAR");
   const cond = gen.valueToCode(block, "COND", ORDER_NONE) || "true";
   return `$${v} = ${cond}\n`;

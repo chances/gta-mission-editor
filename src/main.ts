@@ -1,15 +1,15 @@
 import Blockly from "blockly";
 
-import blocks from "./blocks.js";
-import sannyGen from "./generator.js";
-import toolbox from "./toolbox.js";
+import blocks from "./blocks.ts";
+import sannyGen from "./generator.ts";
+import toolbox from "./toolbox.ts";
 
 Blockly.common.defineBlocks(blocks);
 Blockly.Scrollbar.scrollbarThickness = 10;
 
 const workspace = Blockly.inject("blocklyDiv", {
   toolbox,
-  theme: Blockly.Themes.Dark,
+  theme: Blockly.Themes.Zelos,
   grid: { spacing: 24, length: 8, colour: "#2a2a4a", snap: true },
   zoom: { controls: true, wheel: true, startScale: 0.9 },
   trashcan: true,
@@ -63,12 +63,12 @@ Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom(startXml), workspace);
 // ─── Generate ──────────────────────────────────────────────────────────────
 
 function generate() {
-  const title = document.getElementById("missionName").value || "My Mission";
-  const description = document.getElementById("missionDescription").value || "";
-  const reward = document.getElementById("missionReward").value || 250;
+  const title = (document.getElementById("missionName") as HTMLInputElement)?.value ?? "My Mission";
+  const description = (document.getElementById("missionDescription") as HTMLInputElement)?.value ?? "";
+  const reward = Number((document.getElementById("missionReward") as HTMLInputElement)?.value) ?? 250;
 
-  sannyGen._missionTitle = title;
-  sannyGen._missionReward = reward;
+  sannyGen.missionTitle = title;
+  sannyGen.missionReward = reward;
 
   const header = [
     `{$CLEO .cm}`,
@@ -82,15 +82,16 @@ function generate() {
   ].join("\n") + "\n";
   const body = sannyGen.workspaceToCode(workspace);
 
-  document.getElementById("codeOutput").textContent = header + body;
+  document.getElementById("codeOutput")!.textContent = header + body;
 }
 
-document.getElementById("generateBtn").addEventListener("click", generate);
+document.getElementById("generateBtn")!.addEventListener("click", generate);
 
-document.getElementById("copyBtn").addEventListener("click", () => {
-  const text = document.getElementById("codeOutput").textContent;
+document.getElementById("copyBtn")!.addEventListener("click", () => {
+  const text = document.getElementById("codeOutput")!.textContent;
+  if (!text) return;
   navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById("copyBtn");
+    const btn = document.getElementById("copyBtn")!;
     btn.textContent = "Copied!";
     setTimeout(() => {
       btn.textContent = "Copy";
@@ -99,7 +100,7 @@ document.getElementById("copyBtn").addEventListener("click", () => {
 });
 
 // Auto-generate on workspace change (debounced)
-let debounceTimer;
+let debounceTimer: number;
 workspace.addChangeListener(() => {
   clearTimeout(debounceTimer);
   debounceTimer = setTimeout(generate, 400);
