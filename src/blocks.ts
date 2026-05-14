@@ -16,8 +16,10 @@ const CLEOBlocks = {} as Record<string, BlockDefinition>;
 CLEOBlocks["var_set_bool_literal"] = {
   init() {
     this.appendDummyInput()
-      .appendField("set bool $")
-      .appendField(new Blockly.FieldTextInput("myVar"), "VAR")
+      .appendField("set")
+      .appendField(new Blockly.FieldLabel("bool", "blockly-bold-field type"))
+      .appendField("$")
+      .appendField(new Blockly.FieldVariable("myVar"), "VAR")
       .appendField("to")
       .appendField(new Blockly.FieldDropdown([["true", "true"], ["false", "false"]]), "VAL");
     this.setPreviousStatement(true, null);
@@ -29,8 +31,10 @@ CLEOBlocks["var_set_bool_literal"] = {
 CLEOBlocks["var_set_bool_cond"] = {
   init() {
     this.appendDummyInput()
-      .appendField("set bool $")
-      .appendField(new Blockly.FieldTextInput("myVar"), "VAR");
+      .appendField("set")
+      .appendField(new Blockly.FieldLabel("bool", "blockly-bold-field type"))
+      .appendField("$")
+      .appendField(new Blockly.FieldVariable("myVar"), "VAR");
     this.appendValueInput("COND").setCheck("Condition").appendField("to");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
@@ -41,8 +45,10 @@ CLEOBlocks["var_set_bool_cond"] = {
 CLEOBlocks["var_set_number"] = {
   init() {
     this.appendDummyInput()
-      .appendField("set number $")
-      .appendField(new Blockly.FieldTextInput("myVar"), "VAR")
+      .appendField("set")
+      .appendField(new Blockly.FieldLabel("number", "blockly-bold-field type"))
+      .appendField("$")
+      .appendField(new Blockly.FieldVariable("myVar"), "VAR")
       .appendField("to")
       .appendField(new Blockly.FieldNumber(0, "VAL"));
     this.setPreviousStatement(true, null);
@@ -54,8 +60,10 @@ CLEOBlocks["var_set_number"] = {
 CLEOBlocks["var_set_string"] = {
   init() {
     this.appendDummyInput()
-      .appendField("set string $")
-      .appendField(new Blockly.FieldTextInput("myVar"), "VAR")
+      .appendField("set")
+      .appendField(new Blockly.FieldLabel("string", "blockly-bold-field type"))
+      .appendField("$")
+      .appendField(new Blockly.FieldVariable("myVar"), "VAR")
       .appendField("to")
       .appendField(new Blockly.FieldTextInput("Hello"), "VAL");
     this.setPreviousStatement(true, null);
@@ -68,7 +76,7 @@ CLEOBlocks["var_check_bool"] = {
   init() {
     this.appendDummyInput()
       .appendField("$")
-      .appendField(new Blockly.FieldTextInput("myVar"), "VAR")
+      .appendField(new Blockly.FieldVariable("myVar"), "VAR")
       .appendField("equals")
       .appendField(new Blockly.FieldDropdown([["true", "true"], ["false", "false"]]), "VAL");
     this.setOutput(true, "Condition");
@@ -80,7 +88,7 @@ CLEOBlocks["var_check_number"] = {
   init() {
     this.appendDummyInput()
       .appendField("$")
-      .appendField(new Blockly.FieldTextInput("myVar"), "VAR")
+      .appendField(new Blockly.FieldVariable("myVar"), "VAR")
       .appendField("equals")
       .appendField(new Blockly.FieldNumber(0, "VAL"));
     this.setOutput(true, "Condition");
