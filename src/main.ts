@@ -37,6 +37,9 @@ const startXml = `
                         <statement name="BODY">
                           <block type="mission_fail"/>
                         </statement>
+                        <next>
+                          <block type="break" />
+                        </next>
                       </block>
                     </next>
                   </block>
