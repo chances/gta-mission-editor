@@ -5,6 +5,7 @@ import sannyGen from "./generator.js";
 import toolbox from "./toolbox.js";
 
 Blockly.common.defineBlocks(blocks);
+Blockly.Scrollbar.scrollbarThickness = 10;
 
 const workspace = Blockly.inject("blocklyDiv", {
   toolbox,
