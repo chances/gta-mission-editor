@@ -25,13 +25,13 @@ const startXml = `
       <block type="text_print_title">
         <field name="MS">5000</field>
         <next>
-          <block type="cleo_wait"><field name="MS">7500</field>
+          <block type="wait"><field name="MS">7500</field>
             <next>
-              <block type="cleo_while_true">
+              <block type="while_true">
                 <statement name="BODY">
-                  <block type="cleo_wait"><field name="MS">0</field>
+                  <block type="wait"><field name="MS">0</field>
                     <next>
-                      <block type="cleo_if_or">
+                      <block type="if_or">
                         <value name="COND1"><block type="player_is_dead"/></value>
                         <value name="COND2"><block type="player_has_been_arrested"/></value>
                         <statement name="BODY">

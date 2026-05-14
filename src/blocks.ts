@@ -56,7 +56,7 @@ CLEOBlocks["mission_finish"] = {
 
 // ─── FLOW ──────────────────────────────────────────────────────────────────
 
-CLEOBlocks["cleo_wait"] = {
+CLEOBlocks["wait"] = {
   init() {
     this.appendDummyInput()
       .appendField("wait")
@@ -68,7 +68,7 @@ CLEOBlocks["cleo_wait"] = {
   },
 };
 
-CLEOBlocks["cleo_while_true"] = {
+CLEOBlocks["while_true"] = {
   init() {
     this.appendDummyInput().appendField("while true");
     this.appendStatementInput("BODY").setCheck(null);
@@ -78,7 +78,7 @@ CLEOBlocks["cleo_while_true"] = {
   },
 };
 
-CLEOBlocks["cleo_while"] = {
+CLEOBlocks["while"] = {
   init() {
     this.appendDummyInput().appendField("while");
     this.appendValueInput("COND").setCheck(null);
@@ -89,7 +89,7 @@ CLEOBlocks["cleo_while"] = {
   },
 };
 
-CLEOBlocks["cleo_continue"] = {
+CLEOBlocks["continue"] = {
   init() {
     this.appendDummyInput().appendField("continue");
     this.setPreviousStatement(true, null);
@@ -98,7 +98,7 @@ CLEOBlocks["cleo_continue"] = {
   },
 };
 
-CLEOBlocks["cleo_break"] = {
+CLEOBlocks["break"] = {
   init() {
     this.appendDummyInput().appendField("break");
     this.setPreviousStatement(true, null);
@@ -107,7 +107,7 @@ CLEOBlocks["cleo_break"] = {
   },
 };
 
-CLEOBlocks["cleo_if"] = {
+CLEOBlocks["if"] = {
   init() {
     this.appendValueInput("COND")
       .setCheck("Condition")
@@ -119,7 +119,7 @@ CLEOBlocks["cleo_if"] = {
   },
 };
 
-CLEOBlocks["cleo_if_or"] = {
+CLEOBlocks["if_or"] = {
   init() {
     this.appendValueInput("COND1").setCheck("Condition").appendField("if (any)");
     this.appendValueInput("COND2").setCheck("Condition").appendField("or");
@@ -130,7 +130,7 @@ CLEOBlocks["cleo_if_or"] = {
   },
 };
 
-CLEOBlocks["cleo_if_and"] = {
+CLEOBlocks["if_and"] = {
   init() {
     this.appendValueInput("COND1").setCheck("Condition").appendField("if (all)");
     this.appendValueInput("COND2").setCheck("Condition").appendField("and");
@@ -141,7 +141,7 @@ CLEOBlocks["cleo_if_and"] = {
   },
 };
 
-CLEOBlocks["cleo_if_else"] = {
+CLEOBlocks["if_else"] = {
   init() {
     this.appendValueInput("COND").setCheck("Condition").appendField("if");
     this.appendStatementInput("THEN").setCheck(null).appendField("then");
@@ -152,7 +152,7 @@ CLEOBlocks["cleo_if_else"] = {
   },
 };
 
-CLEOBlocks["cleo_gosub"] = {
+CLEOBlocks["gosub"] = {
   init() {
     this.appendDummyInput()
       .appendField("call function")
@@ -538,7 +538,8 @@ CLEOBlocks["audio_mission_passed"] = {
 };
 
 const soundOptions = Object.keys(sounds).reduce((acc, key) => {
-  acc.push([key, (weapons as Record<string, string>)[key]]);
+  const sound = (sounds as Record<string, string>)[key];
+  if (sound) acc.push([key, sound]);
   return acc;
 }, [] as [string, string][]);
 

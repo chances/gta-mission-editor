@@ -63,58 +63,58 @@ sannyGen.forBlock["mission_finish"] = function () {
 
 // ─── FLOW ──────────────────────────────────────────────────────────────────
 
-sannyGen.forBlock["cleo_wait"] = function (block) {
+sannyGen.forBlock["wait"] = function (block) {
   const ms = block.getFieldValue("MS");
   return `wait ${ms}\n\n`;
 };
 
-sannyGen.forBlock["cleo_while_true"] = function (block, gen) {
+sannyGen.forBlock["while_true"] = function (block, gen) {
   const body = gen.statementToCode(block, "BODY");
   return `while true\n${body}end\n\n`;
 };
 
-sannyGen.forBlock["cleo_while"] = function (block, gen) {
+sannyGen.forBlock["while"] = function (block, gen) {
   const cond = gen.valueToCode(block, "COND", ORDER_NONE) || "true";
   const body = gen.statementToCode(block, "BODY");
   return `while ${cond}\nthen\n${body}end\n\n`;
 };
 
-sannyGen.forBlock["cleo_continue"] = function () {
+sannyGen.forBlock["continue"] = function () {
   return `continue\n`;
 };
 
-sannyGen.forBlock["cleo_break"] = function () {
+sannyGen.forBlock["break"] = function () {
   return `break\n`;
 };
 
-sannyGen.forBlock["cleo_if"] = function (block, gen) {
+sannyGen.forBlock["if"] = function (block, gen) {
   const cond = gen.valueToCode(block, "COND", ORDER_NONE) || "true";
   const body = gen.statementToCode(block, "BODY");
   return `if\n  ${cond}\nthen\n${body}end\n`;
 };
 
-sannyGen.forBlock["cleo_if_or"] = function (block, gen) {
+sannyGen.forBlock["if_or"] = function (block, gen) {
   const c1 = gen.valueToCode(block, "COND1", ORDER_NONE) || "true";
   const c2 = gen.valueToCode(block, "COND2", ORDER_NONE) || "true";
   const body = gen.statementToCode(block, "BODY");
   return `if or\n  ${c1}\n  ${c2}\nthen\n${body}end\n`;
 };
 
-sannyGen.forBlock["cleo_if_and"] = function (block, gen) {
+sannyGen.forBlock["if_and"] = function (block, gen) {
   const c1 = gen.valueToCode(block, "COND1", ORDER_NONE) || "true";
   const c2 = gen.valueToCode(block, "COND2", ORDER_NONE) || "true";
   const body = gen.statementToCode(block, "BODY");
   return `if and\n  ${c1}\n  ${c2}\nthen\n${body}end\n`;
 };
 
-sannyGen.forBlock["cleo_if_else"] = function (block, gen) {
+sannyGen.forBlock["if_else"] = function (block, gen) {
   const cond = gen.valueToCode(block, "COND", ORDER_NONE) || "true";
   const thenBody = gen.statementToCode(block, "THEN");
   const elseBody = gen.statementToCode(block, "ELSE");
   return `if\n  ${cond}\nthen\n${thenBody}else\n${elseBody}end\n`;
 };
 
-sannyGen.forBlock["cleo_gosub"] = function (block) {
+sannyGen.forBlock["gosub"] = function (block) {
   const name = block.getFieldValue("NAME");
   return `${name}()\n`;
 };
