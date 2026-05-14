@@ -4,8 +4,11 @@ import blocks from "./blocks.ts";
 import sannyGen from "./generator.ts";
 import toolbox from "./toolbox.ts";
 
-Blockly.common.defineBlocks(blocks);
+const missionName = document.getElementById("missionName") as HTMLInputElement;
+const missionDescription = document.getElementById("missionDescription") as HTMLInputElement;
+const missionReward = document.getElementById("missionReward") as HTMLInputElement;
 
+Blockly.common.defineBlocks(blocks);
 Blockly.Scrollbar.scrollbarThickness = 10;
 const workspace = Blockly.inject(document.getElementById("blocklyDiv")!, {
   toolbox,
@@ -71,9 +74,9 @@ Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom(startXml), workspace);
 // ─── Generate ──────────────────────────────────────────────────────────────
 
 function generate() {
-  const title = (document.getElementById("missionName") as HTMLInputElement)?.value ?? "My Mission";
-  const description = (document.getElementById("missionDescription") as HTMLInputElement)?.value ?? "";
-  const reward = Number((document.getElementById("missionReward") as HTMLInputElement)?.value) ?? 250;
+  const title = missionName?.value ?? "My Mission";
+  const description = missionDescription?.value ?? "";
+  const reward = Number(missionReward?.value) ?? 250;
 
   sannyGen.missionTitle = title;
   sannyGen.missionReward = reward;
@@ -103,6 +106,15 @@ document.getElementById("copyBtn")!.addEventListener("click", () => {
       btn.textContent = "Copy";
     }, 1500);
   });
+});
+
+missionName.addEventListener("input", generate);
+missionDescription.addEventListener("input", generate);
+missionReward.addEventListener("input", () => {
+  if (missionReward.value && Number(missionReward.value) < 0)
+    missionReward.value = "0";
+
+  generate();
 });
 
 // Auto-generate on workspace change (debounced)
