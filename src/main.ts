@@ -93,8 +93,6 @@ function generate() {
   document.getElementById("codeOutput")!.textContent = header + body;
 }
 
-document.getElementById("generateBtn")!.addEventListener("click", generate);
-
 document.getElementById("copyBtn")!.addEventListener("click", () => {
   const text = document.getElementById("codeOutput")!.textContent;
   if (!text) return;
