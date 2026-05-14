@@ -1,7 +1,8 @@
 :root {
   /* Colors - Base */
   --color-bg-dark: oklch(20% 0.0 0);
-  --color-bg-secondary: rgba(11, 11, 11);
+  --color-bg-secondary: rgb(11, 11, 11);
+  --color-bg-toolbox: rgba(11, 11, 11, 0.925);
   --color-bg-tertiary: #4a4a4a;
   --color-bg-code: black;
 
@@ -202,16 +203,9 @@ body {
 }
 
 .blocklyToolboxDiv {
-  border-inline-end: var(--border-thin) solid var(--color-bg-tertiary);
-  background: var(--color-bg-secondary);
-  transition: border-color 150ms ease-out;
-  transition-delay: 250ms;
-}
-
-.blocklyToolboxDiv:has(.blocklyToolboxCategory[aria-selected="true"]) {
-  border-inline-end-color: transparent;
-  transition: border-color 125ms ease-out;
-  transition-delay: 0;
+  border-inline-end: none;
+  background: var(--color-bg-toolbox);
+  backdrop-filter: blur(10px);
 }
 
 .blocklyTreeRow {
@@ -222,15 +216,17 @@ body {
 
 .blocklyFlyout {
   opacity: 1;
-  transition: opacity 250ms ease-out, display 250ms allow-discrete;
+  transition: opacity 250ms ease-out, backdrop-filter 250ms ease-out, display 250ms allow-discrete;
+  backdrop-filter: blur(10px);
 
   @starting-style {
     opacity: 0;
+    backdrop-filter: blur(0);
   }
 }
 
 .blocklyFlyoutBackground {
   fill: var(--color-bg-secondary) !important;
-  fill-opacity: 0.8;
+  fill-opacity: 0.925;
   stroke: transparent;
 }
