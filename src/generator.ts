@@ -183,7 +183,7 @@ sannyGen.forBlock["text_print_string"] = function (block) {
 sannyGen.forBlock["text_print_string_and_wait"] = function (block) {
   const text = block.getFieldValue("TEXT").replace(/"/g, '\\"');
   const ms = block.getFieldValue("MS");
-  return `Text.PrintString("${text}", {time} ${ms})\nwait ${Number(ms) + 250}\n`;
+  return `Text.PrintString("${text}", {time} ${ms})\nwait ${Number(ms) + 250}\n\n`;
 };
 
 sannyGen.forBlock["text_clear"] = function () {
@@ -201,7 +201,7 @@ sannyGen.forBlock["text_print_title_and_wait"] = function (block, gen) {
   if (!gen.missionTitle) throw new Error("Mission title is not defined");
   const title = gen.missionTitle.replace(/"/g, '\\"');
   const ms = block.getFieldValue("MS");
-  return `Text.PrintBigString("${title}", {time} ${ms}, TextStyle.BottomRight)\nwait ${Number(ms) + 250}\n`;
+  return `Text.PrintBigString("${title}", {time} ${ms}, TextStyle.BottomRight)\nwait ${Number(ms) + 250}\n\n`;
 };
 
 sannyGen.forBlock["text_print_big_string"] = function (block) {
@@ -213,7 +213,7 @@ sannyGen.forBlock["text_print_big_string"] = function (block) {
 sannyGen.forBlock["text_print_big_string_and_wait"] = function (block) {
   const text = block.getFieldValue("TEXT").replace(/"/g, '\\"');
   const ms = block.getFieldValue("MS");
-  return `Text.PrintBigString("${text}", {time} ${ms}, TextStyle.BottomRight)\nwait ${Number(ms) + 250}\n`;
+  return `Text.PrintBigString("${text}", {time} ${ms}, TextStyle.BottomRight)\nwait ${Number(ms) + 250}\n\n`;
 };
 
 sannyGen.forBlock["text_print_help"] = function (block) {
