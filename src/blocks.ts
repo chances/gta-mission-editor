@@ -512,7 +512,7 @@ CLEOBlocks["pickup_create"] = {
   init() {
     this.appendDummyInput()
       .appendField("create pickup  $")
-      .appendField(new Blockly.FieldTextInput("package"), "VAR")
+      .appendField(new Blockly.FieldVariable("package"), "PICKUP_VAR")
       .appendField("model")
       .appendField(new Blockly.FieldNumber(1321, 0), "MODEL");
     this.appendDummyInput()
@@ -538,7 +538,7 @@ CLEOBlocks["pickup_collected"] = {
   init() {
     this.appendDummyInput()
       .appendField("pickup  $")
-      .appendField(new Blockly.FieldTextInput("package"), "VAR")
+      .appendField(new Blockly.FieldVariable("package"), "PICKUP_VAR")
       .appendField("was collected");
     this.setOutput(true, "Condition");
     this.setColour(30);
@@ -549,7 +549,7 @@ CLEOBlocks["pickup_remove"] = {
   init() {
     this.appendDummyInput()
       .appendField("remove pickup  $")
-      .appendField(new Blockly.FieldTextInput("package"), "VAR");
+      .appendField(new Blockly.FieldVariable("package"), "PICKUP_VAR");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(30);
@@ -562,7 +562,7 @@ CLEOBlocks["blip_for_pickup"] = {
   init() {
     this.appendDummyInput()
       .appendField("blip  $")
-      .appendField(new Blockly.FieldTextInput("blip"), "BLIP_VAR")
+      .appendField(new Blockly.FieldVariable("blip"), "BLIP_VAR")
       .appendField("on pickup  $")
       .appendField(new Blockly.FieldTextInput("package"), "PICKUP_VAR");
     this.setPreviousStatement(true, null);
@@ -575,7 +575,7 @@ CLEOBlocks["blip_for_coord"] = {
   init() {
     this.appendDummyInput()
       .appendField("blip  $")
-      .appendField(new Blockly.FieldTextInput("blip"), "BLIP_VAR")
+      .appendField(new Blockly.FieldVariable("blip"), "BLIP_VAR")
       .appendField("at")
       .appendField("X").appendField(new Blockly.FieldNumber(0), "X")
       .appendField("Y").appendField(new Blockly.FieldNumber(0), "Y")
@@ -590,7 +590,7 @@ CLEOBlocks["blip_remove"] = {
   init() {
     this.appendDummyInput()
       .appendField("remove blip  $")
-      .appendField(new Blockly.FieldTextInput("blip"), "VAR");
+      .appendField(new Blockly.FieldVariable("blip"), "BLIP_VAR");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(30);
@@ -630,9 +630,11 @@ CLEOBlocks["audio_mission_passed"] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(45);
+    this.setTooltip("Audio.PlayMissionPassedTune(1)");
   },
 };
 
+const soundTooltip = "ScriptSound";
 const soundOptions = Object.keys(sounds).reduce((acc, key) => {
   const sound = (sounds as Record<string, string>)[key];
   if (sound) acc.push([key, sound]);
@@ -642,8 +644,10 @@ const soundOptions = Object.keys(sounds).reduce((acc, key) => {
 CLEOBlocks["sound_one_off"] = {
   init() {
     this.appendDummyInput()
-      .appendField("play one off sound  $")
-      .appendField(new Blockly.FieldDropdown(soundOptions), "SOUND")
+      .appendField("play sound named")
+      .appendField(new Blockly.FieldDropdown(soundOptions, undefined, {
+        tooltip: soundTooltip
+      }), "SOUND")
       .appendField("at")
       .appendField("X").appendField(new Blockly.FieldNumber(0), "X")
       .appendField("Y").appendField(new Blockly.FieldNumber(0), "Y")
@@ -651,14 +655,19 @@ CLEOBlocks["sound_one_off"] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(45);
+    this.setTooltip("Sound.AddOneOffSound");
   },
 };
 
 CLEOBlocks["sound_loop"] = {
   init() {
     this.appendDummyInput()
-      .appendField("play looping sound  $")
-      .appendField(new Blockly.FieldDropdown(soundOptions), "SOUND")
+      .appendField("play looping sound $")
+      .appendField(new Blockly.FieldVariable("payphoneSfx"), "SOUND_VAR")
+      .appendField("named")
+      .appendField(new Blockly.FieldDropdown(soundOptions), "SOUND", undefined, {
+        tooltip: soundTooltip
+      })
       .appendField("at")
       .appendField("X").appendField(new Blockly.FieldNumber(0), "X")
       .appendField("Y").appendField(new Blockly.FieldNumber(0), "Y")
@@ -666,18 +675,19 @@ CLEOBlocks["sound_loop"] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(45);
+    this.setTooltip("Sound.AddContinuous");
   },
 };
 
 CLEOBlocks["sound_remove"] = {
   init() {
     this.appendDummyInput()
-      .appendField("stop sound  $")
-      // TODO: Use a dropdown for sound names
-      .appendField(new Blockly.FieldTextInput("SoundPayphoneRinging"), "VAR");
+      .appendField("stop sound $")
+      .appendField(new Blockly.FieldVariable("payphoneSfx"), "SOUND_VAR");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(45);
+    this.setTooltip("Sound.Remove");
   },
 };
 

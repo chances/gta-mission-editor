@@ -25,13 +25,13 @@ const ORDER_NONE = 0;
 // ─── VARIABLES ─────────────────────────────────────────────────────────────
 
 sannyGen.forBlock["var_set_bool_literal"] = function (block) {
-  const v = block.getFieldValue("VAR");
+  const v = sannyGen.getVariableName(block.getFieldValue("VAR"));
   const val = block.getFieldValue("VAL");
   return `$${v} = ${val}\n`;
 };
 
 sannyGen.forBlock["var_set_bool_cond"] = function (block, gen) {
-  const v = block.getFieldValue("VAR");
+  const v = sannyGen.getVariableName(block.getFieldValue("VAR"));
   const cond = gen.valueToCode(block, "COND", ORDER_NONE) || "false";
   if (cond === "false") return `$${v} = false\n`;
   return [
@@ -45,25 +45,25 @@ sannyGen.forBlock["var_set_bool_cond"] = function (block, gen) {
 };
 
 sannyGen.forBlock["var_set_number"] = function (block) {
-  const v = block.getFieldValue("VAR");
+  const v = sannyGen.getVariableName(block.getFieldValue("VAR"));
   const val = block.getFieldValue("VAL");
   return `$${v} = ${val}\n`;
 };
 
 sannyGen.forBlock["var_set_string"] = function (block) {
-  const v = block.getFieldValue("VAR");
+  const v = sannyGen.getVariableName(block.getFieldValue("VAR"));
   const val = block.getFieldValue("VAL");
   return `$${v} = "${val}"\n`;
 };
 
 sannyGen.forBlock["var_check_bool"] = function (block) {
-  const v = block.getFieldValue("VAR");
+  const v = sannyGen.getVariableName(block.getFieldValue("VAR"));
   const val = block.getFieldValue("VAL");
   return [`$${v} == ${val}`, ORDER_NONE];
 };
 
 sannyGen.forBlock["var_check_number"] = function (block) {
-  const v = block.getFieldValue("VAR");
+  const v = sannyGen.getVariableName(block.getFieldValue("VAR"));
   const val = block.getFieldValue("VAL");
   return [`$${v} == ${val}`, ORDER_NONE];
 };
@@ -134,7 +134,6 @@ sannyGen.forBlock["mission_given"] = function () {
 
 sannyGen.forBlock["mission_pass"] = function (block) {
   return [
-    "Audio.PlayMissionPassedTune(1)",
     `Stat.RegisterMissionPassed('${block.getFieldValue("KEXT") || "Mpass_0"}')`,
     "Player.AddScore($player, REWARD)",
     "Text.PrintWithNumberBig('M_PASS', REWARD, 5000, TextStyle.Middle)",
@@ -283,7 +282,7 @@ sannyGen.forBlock["player_lifting_phone"] = function () {
 // ─── PICKUPS ───────────────────────────────────────────────────────────────
 
 sannyGen.forBlock["pickup_create"] = function (block) {
-  const v = block.getFieldValue("VAR");
+  const v = sannyGen.getVariableName(block.getFieldValue("PICKUP_VAR"));
   const model = block.getFieldValue("MODEL");
   const type = block.getFieldValue("TYPE");
   const x = block.getFieldValue("X");
@@ -293,19 +292,19 @@ sannyGen.forBlock["pickup_create"] = function (block) {
 };
 
 sannyGen.forBlock["pickup_collected"] = function (block) {
-  const v = block.getFieldValue("VAR");
+  const v = sannyGen.getVariableName(block.getFieldValue("PICKUP_VAR"));
   return [`Pickup.HasBeenCollected($${v})`, ORDER_NONE];
 };
 
 sannyGen.forBlock["pickup_remove"] = function (block) {
-  const v = block.getFieldValue("VAR");
+  const v = sannyGen.getVariableName(block.getFieldValue("PICKUP_VAR"));
   return `Pickup.Remove($${v})\n`;
 };
 
 // ─── BLIPS ─────────────────────────────────────────────────────────────────
 
 sannyGen.forBlock["blip_for_pickup"] = function (block) {
-  const blip = block.getFieldValue("BLIP_VAR");
+  const blip = sannyGen.getVariableName(block.getFieldValue("BLIP_VAR"));
   const pickup = block.getFieldValue("PICKUP_VAR");
   return `$${blip} = Blip.AddForPickup($${pickup})\n`;
 };
@@ -319,8 +318,8 @@ sannyGen.forBlock["blip_for_coord"] = function (block) {
 };
 
 sannyGen.forBlock["blip_remove"] = function (block) {
-  const v = block.getFieldValue("VAR");
-  return `Blip.Remove($${v})\n`;
+  const blip = sannyGen.getVariableName(block.getFieldValue("BLIP_VAR"));
+  return `Blip.Remove($${blip})\n`;
 };
 
 // ─── AUDIO / CAMERA ────────────────────────────────────────────────────────
@@ -344,7 +343,7 @@ sannyGen.forBlock["sound_one_off"] = function (block) {
   const x = block.getFieldValue("X");
   const y = block.getFieldValue("Y");
   const z = block.getFieldValue("Z");
-  return `Sound.AddOneShot(${x}, ${y}, ${z}, ScriptSound.${sound})\n`;
+  return `Sound.AddOneOffSound(${x}, ${y}, ${z}, ScriptSound.${sound})\n`;
 };
 
 sannyGen.forBlock["sound_loop"] = function (block) {
@@ -352,12 +351,13 @@ sannyGen.forBlock["sound_loop"] = function (block) {
   const x = block.getFieldValue("X");
   const y = block.getFieldValue("Y");
   const z = block.getFieldValue("Z");
-  return `Sound.AddContinuous(${x}, ${y}, ${z}, ScriptSound.${sound})\n`;
+  const soundVar = sannyGen.getVariableName(block.getFieldValue("SOUND_VAR"));
+  return `Sound.AddContinuous(${x}, ${y}, ${z}, ScriptSound.${sound}, ${soundVar})\n`;
 };
 
 sannyGen.forBlock["sound_remove"] = function (block) {
-  const v = block.getFieldValue("VAR");
-  return `Sound.Remove($${v})\n`;
+  const sound = sannyGen.getVariableName(block.getFieldValue("SOUND_VAR"));
+  return `Sound.Remove($${sound})\n`;
 };
 
 export default sannyGen;

@@ -45,9 +45,13 @@ const startXml = `
                   </block>
                 </statement>
                 <next>
-                  <block type="mission_pass">
+                  <block type="audio_mission_passed">
                     <next>
-                      <block type="mission_finish"/>
+                      <block type="mission_pass">
+                        <next>
+                          <block type="mission_finish"/>
+                        </next>
+                      </block>
                     </next>
                   </block>
                 </next>
