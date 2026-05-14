@@ -11,7 +11,7 @@ const toolbox: ToolboxDefinition = {
       colour: "330",
       contents: [
         { kind: "block", type: "var_set_bool_literal" },
-        { kind: "block", type: "var_set_bool" },
+        { kind: "block", type: "var_set_bool_cond" },
         { kind: "block", type: "var_set_number" },
         { kind: "block", type: "var_set_string" },
         { kind: "block", type: "var_check_bool" },

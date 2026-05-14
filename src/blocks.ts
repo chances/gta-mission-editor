@@ -11,50 +11,84 @@ type BlockDefinition = any;
 // Block definitions for CLEO/Sanny Builder mission scripting
 const CLEOBlocks = {} as Record<string, BlockDefinition>;
 
-// ─── MISSION ───────────────────────────────────────────────────────────────
+// ─── VARIABLES ─────────────────────────────────────────────────────────────
 
-CLEOBlocks["mission_given"] = {
+CLEOBlocks["var_set_bool_literal"] = {
   init() {
     this.appendDummyInput()
-      .appendField("mission given");
+      .appendField("set bool $")
+      .appendField(new Blockly.FieldTextInput("myVar"), "VAR")
+      .appendField("to")
+      .appendField(new Blockly.FieldDropdown([["true", "true"], ["false", "false"]]), "VAL");
+    this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(270);
-    this.setTooltip("Register mission given, incrementing the player's attempt counter");
+    this.setColour(330);
   },
 };
 
-CLEOBlocks["mission_pass"] = {
+CLEOBlocks["var_set_bool_cond"] = {
   init() {
     this.appendDummyInput()
-      .appendField("mission")
-      .appendField(new Blockly.FieldTextInput("Mpass_0"), "KEXT")
-      .appendField("passed");
+      .appendField("set bool $")
+      .appendField(new Blockly.FieldTextInput("myVar"), "VAR");
+    this.appendValueInput("COND").setCheck("Condition").appendField("to");
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
-    this.setColour(270);
-    this.setTooltip("Play mission passed tune, register mission passed, award money, and show success banner");
+    this.setColour(330);
   },
 };
 
-CLEOBlocks["mission_fail"] = {
+CLEOBlocks["var_set_number"] = {
   init() {
-    this.appendDummyInput().appendField("fail mission & terminate");
+    this.appendDummyInput()
+      .appendField("set number $")
+      .appendField(new Blockly.FieldTextInput("myVar"), "VAR")
+      .appendField("to")
+      .appendField(new Blockly.FieldNumber(0, "VAL"));
     this.setPreviousStatement(true, null);
-    this.setColour(270);
-    this.setTooltip("Show fail banner, call Mission.Fail(), reset state, and terminate CLEO thread");
+    this.setNextStatement(true, null);
+    this.setColour(330);
   },
 };
 
-CLEOBlocks["mission_finish"] = {
+CLEOBlocks["var_set_string"] = {
   init() {
-    this.appendDummyInput().appendField("finish mission & terminate");
+    this.appendDummyInput()
+      .appendField("set string $")
+      .appendField(new Blockly.FieldTextInput("myVar"), "VAR")
+      .appendField("to")
+      .appendField(new Blockly.FieldTextInput("Hello"), "VAL");
     this.setPreviousStatement(true, null);
-    this.setColour(270);
-    this.setTooltip("Mission.Finish(), reset state, and terminate CLEO thread");
+    this.setNextStatement(true, null);
+    this.setColour(330);
   },
 };
 
-// ─── FLOW ──────────────────────────────────────────────────────────────────
+CLEOBlocks["var_check_bool"] = {
+  init() {
+    this.appendDummyInput()
+      .appendField("$")
+      .appendField(new Blockly.FieldTextInput("myVar"), "VAR")
+      .appendField("equals")
+      .appendField(new Blockly.FieldDropdown([["true", "true"], ["false", "false"]]), "VAL");
+    this.setOutput(true, "Condition");
+    this.setColour(330);
+  },
+};
+
+CLEOBlocks["var_check_number"] = {
+  init() {
+    this.appendDummyInput()
+      .appendField("$")
+      .appendField(new Blockly.FieldTextInput("myVar"), "VAR")
+      .appendField("equals")
+      .appendField(new Blockly.FieldNumber(0, "VAL"));
+    this.setOutput(true, "Condition");
+    this.setColour(330);
+  },
+};
+
+// ─── CONTROL FLOW ──────────────────────────────────────────────────────────
 
 CLEOBlocks["wait"] = {
   init() {
@@ -160,6 +194,49 @@ CLEOBlocks["gosub"] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(210);
+  },
+};
+
+// ─── MISSION ───────────────────────────────────────────────────────────────
+
+CLEOBlocks["mission_given"] = {
+  init() {
+    this.appendDummyInput()
+      .appendField("mission given");
+    this.setNextStatement(true, null);
+    this.setColour(270);
+    this.setTooltip("Register mission given, incrementing the player's attempt counter");
+  },
+};
+
+CLEOBlocks["mission_pass"] = {
+  init() {
+    this.appendDummyInput()
+      .appendField("mission")
+      .appendField(new Blockly.FieldTextInput("Mpass_0"), "KEXT")
+      .appendField("passed");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(270);
+    this.setTooltip("Play mission passed tune, register mission passed, award money, and show success banner");
+  },
+};
+
+CLEOBlocks["mission_fail"] = {
+  init() {
+    this.appendDummyInput().appendField("fail mission & terminate");
+    this.setPreviousStatement(true, null);
+    this.setColour(270);
+    this.setTooltip("Show fail banner, call Mission.Fail(), reset state, and terminate CLEO thread");
+  },
+};
+
+CLEOBlocks["mission_finish"] = {
+  init() {
+    this.appendDummyInput().appendField("finish mission & terminate");
+    this.setPreviousStatement(true, null);
+    this.setColour(270);
+    this.setTooltip("Mission.Finish(), reset state, and terminate CLEO thread");
   },
 };
 
@@ -593,83 +670,6 @@ CLEOBlocks["sound_remove"] = {
     this.setPreviousStatement(true, null);
     this.setNextStatement(true, null);
     this.setColour(45);
-  },
-};
-
-// ─── VARIABLES ─────────────────────────────────────────────────────────────
-
-CLEOBlocks["var_set_bool_literal"] = {
-  init() {
-    this.appendDummyInput()
-      .appendField("set bool $")
-      .appendField(new Blockly.FieldTextInput("myVar"), "VAR")
-      .appendField("to")
-      .appendField(new Blockly.FieldDropdown([["true", "true"], ["false", "false"]]), "VAL");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(330);
-  },
-};
-
-CLEOBlocks["var_set_bool"] = {
-  init() {
-    this.appendDummyInput()
-      .appendField("set bool $")
-      .appendField(new Blockly.FieldTextInput("myVar"), "VAR");
-    this.appendValueInput("COND").setCheck("Condition").appendField("to");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(330);
-  },
-};
-
-CLEOBlocks["var_set_number"] = {
-  init() {
-    this.appendDummyInput()
-      .appendField("set number $")
-      .appendField(new Blockly.FieldTextInput("myVar"), "VAR")
-      .appendField("to")
-      .appendField(new Blockly.FieldNumber(0, "VAL"));
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(330);
-  },
-};
-
-CLEOBlocks["var_set_string"] = {
-  init() {
-    this.appendDummyInput()
-      .appendField("set string $")
-      .appendField(new Blockly.FieldTextInput("myVar"), "VAR")
-      .appendField("to")
-      .appendField(new Blockly.FieldTextInput("Hello"), "VAL");
-    this.setPreviousStatement(true, null);
-    this.setNextStatement(true, null);
-    this.setColour(330);
-  },
-};
-
-CLEOBlocks["var_check_bool"] = {
-  init() {
-    this.appendDummyInput()
-      .appendField("$")
-      .appendField(new Blockly.FieldTextInput("myVar"), "VAR")
-      .appendField("equals")
-      .appendField(new Blockly.FieldDropdown([["true", "true"], ["false", "false"]]), "VAL");
-    this.setOutput(true, "Condition");
-    this.setColour(330);
-  },
-};
-
-CLEOBlocks["var_check_number"] = {
-  init() {
-    this.appendDummyInput()
-      .appendField("$")
-      .appendField(new Blockly.FieldTextInput("myVar"), "VAR")
-      .appendField("equals")
-      .appendField(new Blockly.FieldNumber(0, "VAL"));
-    this.setOutput(true, "Condition");
-    this.setColour(330);
   },
 };
 

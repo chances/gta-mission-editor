@@ -22,6 +22,110 @@ sannyGen.INDENT = "  ";
 
 const ORDER_NONE = 0;
 
+// ─── VARIABLES ─────────────────────────────────────────────────────────────
+
+sannyGen.forBlock["var_set_bool_literal"] = function (block) {
+  const v = block.getFieldValue("VAR");
+  const val = block.getFieldValue("VAL");
+  return `$${v} = ${val}\n`;
+};
+
+sannyGen.forBlock["var_set_bool_cond"] = function (block, gen) {
+  const v = block.getFieldValue("VAR");
+  const cond = gen.valueToCode(block, "COND", ORDER_NONE) || "false";
+  if (cond === "false") return `$${v} = false\n`;
+  return [
+    `$${v} = false`,
+    `if ${cond}`,
+    "then",
+    `  $${v} = true`,
+    "endif",
+    ].join("\n");
+  // return `$${v} = ${cond}\n`;
+};
+
+sannyGen.forBlock["var_set_number"] = function (block) {
+  const v = block.getFieldValue("VAR");
+  const val = block.getFieldValue("VAL");
+  return `$${v} = ${val}\n`;
+};
+
+sannyGen.forBlock["var_set_string"] = function (block) {
+  const v = block.getFieldValue("VAR");
+  const val = block.getFieldValue("VAL");
+  return `$${v} = "${val}"\n`;
+};
+
+sannyGen.forBlock["var_check_bool"] = function (block) {
+  const v = block.getFieldValue("VAR");
+  const val = block.getFieldValue("VAL");
+  return [`$${v} == ${val}`, ORDER_NONE];
+};
+
+sannyGen.forBlock["var_check_number"] = function (block) {
+  const v = block.getFieldValue("VAR");
+  const val = block.getFieldValue("VAL");
+  return [`$${v} == ${val}`, ORDER_NONE];
+};
+
+// ─── CONTROL FLOW ──────────────────────────────────────────────────────────
+
+sannyGen.forBlock["wait"] = function (block) {
+  const ms = block.getFieldValue("MS");
+  return `wait ${ms}\n\n`;
+};
+
+sannyGen.forBlock["while_true"] = function (block, gen) {
+  const body = gen.statementToCode(block, "BODY");
+  return `while true\n${body}end\n\n`;
+};
+
+sannyGen.forBlock["while"] = function (block, gen) {
+  const cond = gen.valueToCode(block, "COND", ORDER_NONE) || "true";
+  const body = gen.statementToCode(block, "BODY");
+  return `while ${cond}\nthen\n${body}end\n\n`;
+};
+
+sannyGen.forBlock["continue"] = function () {
+  return `continue\n`;
+};
+
+sannyGen.forBlock["break"] = function () {
+  return `\nbreak\n`;
+};
+
+sannyGen.forBlock["if"] = function (block, gen) {
+  const cond = gen.valueToCode(block, "COND", ORDER_NONE) || "true";
+  const body = gen.statementToCode(block, "BODY");
+  return `if\n  ${cond}\nthen\n${body}end\n`;
+};
+
+sannyGen.forBlock["if_or"] = function (block, gen) {
+  const c1 = gen.valueToCode(block, "COND1", ORDER_NONE) || "true";
+  const c2 = gen.valueToCode(block, "COND2", ORDER_NONE) || "true";
+  const body = gen.statementToCode(block, "BODY");
+  return `if or\n  ${c1}\n  ${c2}\nthen\n${body}end\n`;
+};
+
+sannyGen.forBlock["if_and"] = function (block, gen) {
+  const c1 = gen.valueToCode(block, "COND1", ORDER_NONE) || "true";
+  const c2 = gen.valueToCode(block, "COND2", ORDER_NONE) || "true";
+  const body = gen.statementToCode(block, "BODY");
+  return `if and\n  ${c1}\n  ${c2}\nthen\n${body}end\n`;
+};
+
+sannyGen.forBlock["if_else"] = function (block, gen) {
+  const cond = gen.valueToCode(block, "COND", ORDER_NONE) || "true";
+  const thenBody = gen.statementToCode(block, "THEN");
+  const elseBody = gen.statementToCode(block, "ELSE");
+  return `if\n  ${cond}\nthen\n${thenBody}else\n${elseBody}end\n`;
+};
+
+sannyGen.forBlock["gosub"] = function (block) {
+  const name = block.getFieldValue("NAME");
+  return `${name}()\n`;
+};
+
 // ─── MISSION ───────────────────────────────────────────────────────────────
 
 sannyGen.forBlock["mission_given"] = function () {
@@ -59,64 +163,6 @@ sannyGen.forBlock["mission_finish"] = function () {
     "",
     "05DC: terminate_custom_thread",
   ].join("\n") + "\n";
-};
-
-// ─── FLOW ──────────────────────────────────────────────────────────────────
-
-sannyGen.forBlock["wait"] = function (block) {
-  const ms = block.getFieldValue("MS");
-  return `wait ${ms}\n\n`;
-};
-
-sannyGen.forBlock["while_true"] = function (block, gen) {
-  const body = gen.statementToCode(block, "BODY");
-  return `while true\n${body}end\n\n`;
-};
-
-sannyGen.forBlock["while"] = function (block, gen) {
-  const cond = gen.valueToCode(block, "COND", ORDER_NONE) || "true";
-  const body = gen.statementToCode(block, "BODY");
-  return `while ${cond}\nthen\n${body}end\n\n`;
-};
-
-sannyGen.forBlock["continue"] = function () {
-  return `continue\n`;
-};
-
-sannyGen.forBlock["break"] = function () {
-  return `break\n`;
-};
-
-sannyGen.forBlock["if"] = function (block, gen) {
-  const cond = gen.valueToCode(block, "COND", ORDER_NONE) || "true";
-  const body = gen.statementToCode(block, "BODY");
-  return `if\n  ${cond}\nthen\n${body}end\n`;
-};
-
-sannyGen.forBlock["if_or"] = function (block, gen) {
-  const c1 = gen.valueToCode(block, "COND1", ORDER_NONE) || "true";
-  const c2 = gen.valueToCode(block, "COND2", ORDER_NONE) || "true";
-  const body = gen.statementToCode(block, "BODY");
-  return `if or\n  ${c1}\n  ${c2}\nthen\n${body}end\n`;
-};
-
-sannyGen.forBlock["if_and"] = function (block, gen) {
-  const c1 = gen.valueToCode(block, "COND1", ORDER_NONE) || "true";
-  const c2 = gen.valueToCode(block, "COND2", ORDER_NONE) || "true";
-  const body = gen.statementToCode(block, "BODY");
-  return `if and\n  ${c1}\n  ${c2}\nthen\n${body}end\n`;
-};
-
-sannyGen.forBlock["if_else"] = function (block, gen) {
-  const cond = gen.valueToCode(block, "COND", ORDER_NONE) || "true";
-  const thenBody = gen.statementToCode(block, "THEN");
-  const elseBody = gen.statementToCode(block, "ELSE");
-  return `if\n  ${cond}\nthen\n${thenBody}else\n${elseBody}end\n`;
-};
-
-sannyGen.forBlock["gosub"] = function (block) {
-  const name = block.getFieldValue("NAME");
-  return `${name}()\n`;
 };
 
 // ─── TEXT ──────────────────────────────────────────────────────────────────
@@ -312,44 +358,6 @@ sannyGen.forBlock["sound_loop"] = function (block) {
 sannyGen.forBlock["sound_remove"] = function (block) {
   const v = block.getFieldValue("VAR");
   return `Sound.Remove($${v})\n`;
-};
-
-// ─── VARIABLES ─────────────────────────────────────────────────────────────
-
-sannyGen.forBlock["var_set_bool_literal"] = function (block) {
-  const v = block.getFieldValue("VAR");
-  const val = block.getFieldValue("VAL");
-  return `$${v} = ${val}\n`;
-};
-
-sannyGen.forBlock["var_set_bool"] = function (block, gen) {
-  const v = block.getFieldValue("VAR");
-  const cond = gen.valueToCode(block, "COND", ORDER_NONE) || "true";
-  return `$${v} = ${cond}\n`;
-};
-
-sannyGen.forBlock["var_set_number"] = function (block) {
-  const v = block.getFieldValue("VAR");
-  const val = block.getFieldValue("VAL");
-  return `$${v} = ${val}\n`;
-};
-
-sannyGen.forBlock["var_set_string"] = function (block) {
-  const v = block.getFieldValue("VAR");
-  const val = block.getFieldValue("VAL");
-  return `$${v} = "${val}"\n`;
-};
-
-sannyGen.forBlock["var_check_bool"] = function (block) {
-  const v = block.getFieldValue("VAR");
-  const val = block.getFieldValue("VAL");
-  return [`$${v} == ${val}`, ORDER_NONE];
-};
-
-sannyGen.forBlock["var_check_number"] = function (block) {
-  const v = block.getFieldValue("VAR");
-  const val = block.getFieldValue("VAL");
-  return [`$${v} == ${val}`, ORDER_NONE];
 };
 
 export default sannyGen;
