@@ -1,0 +1,32 @@
+name: Deploy
+
+on:
+  push: 
+    branches: ["main"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          cache: true
+
+      - name: Lint Sources
+        run: deno lint
+        continue-on-error: true
+
+      - name: Type Check Sources
+        run: deno check .
+        # TODO: Turn this off
+        continue-on-error: true
+
+      - name: Build
+        run: deno task build
+
+      - name: Deploy to GitHub Pages
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
